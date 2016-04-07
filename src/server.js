@@ -14,20 +14,6 @@ app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const options = {}
-
-    // start a server at {port}
-    // 1. get all images in {baselineImageDirectory}
-    // 2. for each of them
-      // check if it has a 'new' version
-      // compare new with old
-      // if there is a diff threshold > {resemblejsThreshold}
-        // add to {outputList} with base64diff
-    // 3. pump out the {outputList} into html file at root
-    // 4. host an API endpoint on same point
-      // endpoints:
-      // choose-image, post: baseline-image-name, baseline or new
-        // sets either of the images into the baseline dir with filename
-
 const dataImg = (f) => `data:image/png;base64,${f}`
 
 const getImages = () => new Promise((resolve, reject) => {
@@ -59,20 +45,22 @@ const getImages = () => new Promise((resolve, reject) => {
 })
 
 app.get("/", (req, res) => {
-  getImages().then(images => {
-    res.render('index.hbs', {images});
-  });
+  getImages().then(
+    images => {
+      res.render('index.hbs', {images});
+    },
+    err => {
+      res.status(500).send(err)
+    });
 });
-
 
 app.post("/choose-image", (req, res) => {
   const { image, file } = req.body;
   const basePath = path.join(options.baselineImageDirectory, file);
   const newPath = path.join(options.newImageDirectory, file);
-  console.log(req.body);
 
   if (image === 'new') {
-    // fs.renameSync(newPath, basePath)
+    fs.renameSync(newPath, basePath)
   }
 
   res.send('done')
