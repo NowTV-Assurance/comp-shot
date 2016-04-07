@@ -3,12 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Shot Comp App</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.0/foundation.css" rel="stylesheet">
 </head>
 <body>
   {{#each images}}
-    <img src="{{this.baseImg}}" alt="">
-    <img src="{{this.diffImg}}" alt="">
-    <img src="{{this.newImg}}" alt="">
+  <div class="row expanded choices" data-file="{{this.filename}}">
+    <h4 class="columns small-12 text-center">{{this.filename}}</h4>
+    <div class="columns small-4">
+      <img src="{{this.baseImg}}" alt="">
+      <button class="button large expanded" data-image="base">
+        Choose Base
+      </button>
+    </div>
+    <div class="columns small-4">
+      <img src="{{this.diffImg}}" alt="">
+      <button class="button large hollow expanded" style="pointer-events: none; cursor: none;">
+        Diff
+      </button>
+    </div>
+    <div class="columns small-4">
+      <img src="{{this.newImg}}" alt="">
+      <button class="button large expanded" data-image="new">
+        Choose New
+      </button>
+    </div>
+  </div>
   {{/each}}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+  <script>
+    $(function(){
+
+      $('.choices').on('click', 'button', function(ev) {
+        var $button = $(this);
+        var $row = $button.closest('.choices')
+        var file = $row.data('file')
+        var image = $button.data('image')
+
+        $.post('/choose-image', { file: file, image: image })
+          .then(function(done) {
+            if (done === 'done') {
+              $row.remove()
+              if ($('.choices').length === 0) {
+                console.log('none left')
+                $('body').append('<div class="callout large success text-center"><h1>You win</h1></div>')
+              }
+            }
+          })
+      })
+    })
+  </script>
 </body>
 </html>

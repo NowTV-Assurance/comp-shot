@@ -4,12 +4,14 @@ import path from 'path';
 import { resemble } from 'resemble';
 import reduce from 'async-reduce';
 import exphbs from 'express-handlebars';
+import bodyParser from 'body-parser';
 
 const app = express();
 app.use(express.static('static'));
 app.engine('.hbs', exphbs({ extname: '.hbs', layout: false }));
 app.set('view engine', '.hbs');
 app.set('views', './views');
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const options = {}
 
@@ -42,6 +44,7 @@ const getImages = () => new Promise((resolve, reject) => {
       .onComplete((data) => {
         if (Number(data.misMatchPercentage) > options.resemblejsThreshold) {
           done(null, acc.concat([{
+            filename: currentImage,
             baseImg: dataImg(baseImg.toString('base64')),
             newImg: dataImg(newImg.toString('base64')),
             diffImg: data.getImageDataUrl()
@@ -59,6 +62,20 @@ app.get("/", (req, res) => {
   getImages().then(images => {
     res.render('index.hbs', {images});
   });
+});
+
+
+app.post("/choose-image", (req, res) => {
+  const { image, file } = req.body;
+  const basePath = path.join(options.baselineImageDirectory, file);
+  const newPath = path.join(options.newImageDirectory, file);
+  console.log(req.body);
+
+  if (image === 'new') {
+    // fs.renameSync(newPath, basePath)
+  }
+
+  res.send('done')
 });
 
 export default app;
