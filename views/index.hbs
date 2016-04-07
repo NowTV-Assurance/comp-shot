@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shot Comp App</title>
+</head>
+<body>
+  {{#each images}}
+    <img src="{{this.baseImg}}" alt="">
+    <img src="{{this.diffImg}}" alt="">
+    <img src="{{this.newImg}}" alt="">
+  {{/each}}
+</body>
+</html>
