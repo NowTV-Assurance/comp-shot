@@ -10,7 +10,7 @@ const app = express();
 app.use(express.static('static'));
 app.engine('.hbs', exphbs({ extname: '.hbs', layout: false }));
 app.set('view engine', '.hbs');
-app.set('views', './views');
+app.set('views', path(__dirname, '..', 'views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const options = {}
