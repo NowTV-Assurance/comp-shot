@@ -8,16 +8,3 @@ export default {
     });
   }
 }
-
-/*
-
-Client side:
-
-  - handle a click
-    - post to API /choose-image.
-    - something visual about the image that's been chosen.
-*/
-
-// PROBS?
-// - access to project filesystem from node_modules?
-// - closing down?

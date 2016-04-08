@@ -68,12 +68,6 @@ app.post("/choose-image", (req, res) => {
 
 export default app;
 
-/*
-  - {baselineImageDirectory} string required
-  - {getNewScreenshot} function(baseFilename) optional
-  - {newImageDirectory} string optional (expects only files with same filename as baseline)
-  - {resemblejsThreshold} number 0.1
-*/
 export function setupMiddleware(config) {
   options.baselineImageDirectory = config.baselineImageDirectory;
   options.getNewScreenshot = config.getNewScreenshot;
