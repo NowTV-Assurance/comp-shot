@@ -1,10 +1,5 @@
-import server, { setupMiddleware } from './server';
+require('babel-register');
+const compShot = require('./start');
+const path = require('path');
 
-export default {
-  start(config) {
-    setupMiddleware(config)
-    server.listen(config.port, () => {
-      console.log(`Comp shot app running on http://localhost:${config.port}` );
-    });
-  }
-}
+module.exports = compShot;
