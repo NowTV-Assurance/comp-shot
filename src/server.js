@@ -28,7 +28,7 @@ const getImages = () => new Promise((resolve, reject) => {
     resemble(newImg)
       .compareTo(baseImg)
       .onComplete((data) => {
-        if (Number(data.misMatchPercentage) > options.resemblejsThreshold) {
+        if (Number(data.misMatchPercentage) >= options.resemblejsThreshold) {
           done(null, acc.concat([{
             filename: currentImage,
             baseImg: dataImg(baseImg.toString('base64')),
